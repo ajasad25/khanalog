@@ -1,0 +1,24 @@
+# dependencies / build
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets and local data
+.env
+.env*.local
+.env.local
+.data/
+.vercel
+
+# local test assets and personal files that aren't part of the app
+test-food.*
+Screenshot*.png
+for-linkedin/
+
+# tooling noise
+.agents/
+.claude/skills/
+skills-lock.json
+.DS_Store

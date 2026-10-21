@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #16a34a;
+  --color-accent-soft: #dcfce7;
+  --color-accent-ink: #052e16;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-stone-100 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
+  overscroll-behavior-y: none;
+}
+
+/* Phone-sized column on desktop, full-bleed on mobile. */
+.app-shell {
+  @apply mx-auto flex h-dvh w-full max-w-md flex-col bg-white shadow-xl dark:bg-stone-900;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+.typing-dot {
+  animation: blink 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
