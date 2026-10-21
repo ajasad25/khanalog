@@ -8,13 +8,7 @@ export default async function SignUpPage() {
 
   return (
     <Landing>
-      <div className="flex justify-center">
-        <SignUp
-          signInUrl="/login"
-          fallbackRedirectUrl="/"
-          appearance={{ elements: { cardBox: "shadow-none border border-stone-200 dark:border-stone-800", rootBox: "w-full" } }}
-        />
-      </div>
+      <SignUp signInUrl="/login" fallbackRedirectUrl="/" />
     </Landing>
   );
 }

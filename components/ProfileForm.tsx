@@ -95,84 +95,85 @@ export function ProfileForm() {
   }
 
   if (!form || !view) {
-    return <div className="grid h-full place-items-center text-sm text-stone-400">{msg ?? "Loading…"}</div>;
+    return <div className="grid h-full place-items-center text-sm text-muted">{msg ?? "Loading…"}</div>;
   }
 
-  const input =
-    "h-11 w-full rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm outline-none focus:border-accent dark:border-stone-700 dark:bg-stone-950";
-
   return (
-    <div className="scrollbar-none h-full overflow-y-auto px-4 pt-[max(12px,env(safe-area-inset-top))] pb-6">
-      <h1 className="text-lg font-semibold">Profile</h1>
-      <p className="text-xs text-stone-400">
-        {view.kind === "demo" ? "Demo sandbox" : "Used to calculate your daily target."}
-      </p>
+    <div className="scrollbar-none h-full overflow-y-auto bg-surface px-4 pt-[max(14px,env(safe-area-inset-top))] pb-8">
+      <h1 className="text-[22px] font-semibold tracking-tight">Profile</h1>
+      <p className="text-[12px] text-muted">{view.kind === "demo" ? "Demo sandbox" : "Used to calculate your daily target."}</p>
 
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        <Field label="Weight (kg)">
-          <input className={input} type="number" inputMode="decimal" value={form.weightKg} onChange={(e) => set("weightKg", e.target.value)} />
+      <div className="mt-5 rounded-3xl border border-line bg-card p-4">
+        <div className="grid grid-cols-3 gap-2">
+          <Field label="Weight (kg)">
+            <input className="field" type="number" inputMode="decimal" value={form.weightKg} onChange={(e) => set("weightKg", e.target.value)} />
+          </Field>
+          <Field label="Height (cm)">
+            <input className="field" type="number" inputMode="decimal" value={form.heightCm} onChange={(e) => set("heightCm", e.target.value)} />
+          </Field>
+          <Field label="Age">
+            <input className="field" type="number" inputMode="numeric" value={form.age} onChange={(e) => set("age", e.target.value)} />
+          </Field>
+        </div>
+
+        <Field label="Sex" className="mt-4">
+          <Segmented
+            value={form.sex}
+            onChange={(v) => set("sex", v as Form["sex"])}
+            options={[
+              ["female", "Female"],
+              ["male", "Male"],
+            ]}
+          />
         </Field>
-        <Field label="Height (cm)">
-          <input className={input} type="number" inputMode="decimal" value={form.heightCm} onChange={(e) => set("heightCm", e.target.value)} />
+
+        <Field label="Activity" className="mt-4">
+          <select className="field" value={form.activity} onChange={(e) => set("activity", e.target.value as Form["activity"])}>
+            <option value="">Choose…</option>
+            {ACTIVITY.map(([v, l]) => (
+              <option key={v} value={v}>
+                {l}
+              </option>
+            ))}
+          </select>
         </Field>
-        <Field label="Age">
-          <input className={input} type="number" inputMode="numeric" value={form.age} onChange={(e) => set("age", e.target.value)} />
+
+        <Field label="Goal" className="mt-4">
+          <Segmented
+            value={form.goalMode}
+            onChange={(v) => set("goalMode", v as Form["goalMode"])}
+            options={[
+              ["lose", "Lose"],
+              ["maintain", "Maintain"],
+              ["gain", "Gain"],
+            ]}
+          />
+        </Field>
+
+        <Field label="Timezone" className="mt-4">
+          <input className="field" value={form.timezone} onChange={(e) => set("timezone", e.target.value)} placeholder="Asia/Karachi" />
         </Field>
       </div>
 
-      <Field label="Sex" className="mt-3">
-        <Segmented
-          value={form.sex}
-          onChange={(v) => set("sex", v as Form["sex"])}
-          options={[
-            ["female", "Female"],
-            ["male", "Male"],
-          ]}
-        />
-      </Field>
-
-      <Field label="Activity" className="mt-3">
-        <select className={input} value={form.activity} onChange={(e) => set("activity", e.target.value as Form["activity"])}>
-          <option value="">Choose…</option>
-          {ACTIVITY.map(([v, l]) => (
-            <option key={v} value={v}>
-              {l}
-            </option>
-          ))}
-        </select>
-      </Field>
-
-      <Field label="Goal" className="mt-3">
-        <Segmented
-          value={form.goalMode}
-          onChange={(v) => set("goalMode", v as Form["goalMode"])}
-          options={[
-            ["lose", "Lose"],
-            ["maintain", "Maintain"],
-            ["gain", "Gain"],
-          ]}
-        />
-      </Field>
-
-      <div className="mt-4 rounded-2xl bg-stone-50 p-3 text-sm dark:bg-stone-800">
-        <div className="flex justify-between">
-          <span className="text-stone-500">Maintenance</span>
+      <div className="mt-3 rounded-3xl bg-cocoa p-4 text-on-primary">
+        <div className="flex justify-between text-sm opacity-80">
+          <span>Maintenance</span>
           <span className="tabular-nums">{view.maintenance ? `${fmt(view.maintenance)} kcal` : "fill in profile"}</span>
         </div>
-        <div className="mt-1 flex justify-between font-medium">
-          <span>Daily target</span>
+        <div className="mt-1.5 flex items-baseline justify-between">
+          <span className="text-sm font-medium">Daily target</span>
           <span className="tabular-nums">
-            {view.goal.dailyCalories ? `${fmt(view.goal.dailyCalories)} kcal` : "–"}
-            {view.goal.source && <span className="ml-1 text-[11px] font-normal text-stone-400">({view.goal.source})</span>}
+            <span className="text-[22px] font-semibold">{view.goal.dailyCalories ? fmt(view.goal.dailyCalories) : "–"}</span>
+            <span className="ml-1 text-[12px] opacity-80">kcal{view.goal.source ? ` · ${view.goal.source}` : ""}</span>
           </span>
         </div>
-        <label className="mt-3 flex items-center gap-2 text-xs">
-          <input type="checkbox" checked={form.useManual} onChange={(e) => set("useManual", e.target.checked)} />
+        <label className="mt-4 flex items-center gap-2.5 text-[13px]">
+          <input type="checkbox" className="h-4 w-4 accent-[#dbb85a]" checked={form.useManual} onChange={(e) => set("useManual", e.target.checked)} />
           Set my own target
         </label>
         {form.useManual && (
           <input
-            className={`${input} mt-2`}
+            className="field mt-2.5 border-transparent bg-on-primary/95 text-ink"
             type="number"
             inputMode="numeric"
             placeholder="e.g. 1500"
@@ -182,37 +183,43 @@ export function ProfileForm() {
         )}
       </div>
 
-      <Field label="Timezone" className="mt-3">
-        <input className={input} value={form.timezone} onChange={(e) => set("timezone", e.target.value)} placeholder="Asia/Karachi" />
-      </Field>
-
-      <section className="mt-5">
-        <div className="mb-1 flex items-center justify-between">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400">My foods</h2>
-          <button onClick={() => setFoods((f) => [...f, { name: "", kcal: "" }])} className="text-xs font-medium text-accent">
+      <section className="mt-6">
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="eyebrow">My foods</h2>
+          <button onClick={() => setFoods((f) => [...f, { name: "", kcal: "" }])} className="text-[12px] font-semibold text-cocoa">
             + Add
           </button>
         </div>
-        {foods.length === 0 && <p className="text-xs text-stone-400">Teach the bot your usual items, e.g. chai = 90.</p>}
+        {foods.length === 0 && (
+          <p className="rounded-3xl border border-dashed border-line p-4 text-center text-[12px] text-muted">
+            Teach the assistant your usual items, e.g. chai = 90.
+          </p>
+        )}
         <div className="space-y-1.5">
           {foods.map((f, i) => (
             <div key={i} className="flex gap-2">
               <input
-                className={input}
+                className="field"
                 placeholder="chai"
                 value={f.name}
                 onChange={(e) => setFoods((all) => all.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))}
               />
               <input
-                className={`${input} w-24 shrink-0`}
+                className="field w-24 shrink-0"
                 type="number"
                 inputMode="numeric"
                 placeholder="kcal"
                 value={f.kcal}
                 onChange={(e) => setFoods((all) => all.map((x, j) => (j === i ? { ...x, kcal: e.target.value } : x)))}
               />
-              <button onClick={() => setFoods((all) => all.filter((_, j) => j !== i))} aria-label="Remove" className="px-1 text-stone-400">
-                ✕
+              <button
+                onClick={() => setFoods((all) => all.filter((_, j) => j !== i))}
+                aria-label="Remove"
+                className="grid h-11 w-9 shrink-0 place-items-center text-muted hover:text-ink"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
               </button>
             </div>
           ))}
@@ -222,13 +229,13 @@ export function ProfileForm() {
       <button
         onClick={save}
         disabled={saving}
-        className="mt-6 w-full rounded-2xl bg-accent py-3 font-medium text-white transition active:scale-[0.98] disabled:opacity-50"
+        className="mt-7 w-full rounded-2xl bg-primary py-3.5 text-[15px] font-medium text-on-primary transition active:scale-[0.98] disabled:opacity-50"
       >
         {saving ? "Saving…" : "Save"}
       </button>
-      {msg && <p className="mt-2 text-center text-xs text-stone-500">{msg}</p>}
+      {msg && <p className="mt-2.5 text-center text-[12px] text-muted">{msg}</p>}
 
-      <button onClick={logout} className="mt-6 w-full text-xs text-stone-400 underline">
+      <button onClick={logout} className="mt-7 w-full text-[12px] text-muted underline underline-offset-4">
         {view.kind === "demo" ? "Leave demo" : "Sign out"}
       </button>
     </div>
@@ -238,7 +245,7 @@ export function ProfileForm() {
 function Field({ label, children, className = "" }: { label: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1 block text-[11px] font-medium text-stone-500">{label}</span>
+      <span className="mb-1.5 block text-[11px] font-medium text-muted">{label}</span>
       {children}
     </label>
   );
@@ -246,15 +253,13 @@ function Field({ label, children, className = "" }: { label: string; children: R
 
 function Segmented({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: [string, string][] }) {
   return (
-    <div className="grid gap-1 rounded-xl bg-stone-100 p-1 dark:bg-stone-800" style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}>
+    <div className="grid gap-1 rounded-2xl bg-card-2 p-1" style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)` }}>
       {options.map(([v, l]) => (
         <button
           key={v}
           type="button"
           onClick={() => onChange(v)}
-          className={`h-9 rounded-lg text-sm transition ${
-            value === v ? "bg-white font-medium shadow-sm dark:bg-stone-700" : "text-stone-500"
-          }`}
+          className={`h-9 rounded-xl text-sm transition ${value === v ? "bg-card font-medium text-ink shadow-sm" : "text-muted"}`}
         >
           {l}
         </button>

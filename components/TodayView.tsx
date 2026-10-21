@@ -23,7 +23,6 @@ export function TodayView() {
   async function remove(kind: "food" | "burned", index: number) {
     if (!view) return;
     const prev = view;
-    // Optimistic removal.
     const next = structuredClone(view);
     (kind === "food" ? next.today.intake : next.today.burned).splice(index, 1);
     setView(next);
@@ -54,9 +53,7 @@ export function TodayView() {
   }
 
   if (!view) {
-    return (
-      <div className="grid h-full place-items-center text-sm text-stone-400">{error ?? "Loading…"}</div>
-    );
+    return <div className="grid h-full place-items-center text-sm text-muted">{error ?? "Loading…"}</div>;
   }
 
   const t = view.today;
@@ -66,19 +63,19 @@ export function TodayView() {
   const C = 2 * Math.PI * R;
 
   return (
-    <div className="scrollbar-none h-full overflow-y-auto px-4 pt-[max(12px,env(safe-area-inset-top))] pb-6">
-      <h1 className="text-lg font-semibold">Today</h1>
-      <p className="text-xs text-stone-400">
+    <div className="scrollbar-none h-full overflow-y-auto bg-surface px-4 pt-[max(14px,env(safe-area-inset-top))] pb-6">
+      <h1 className="text-[22px] font-semibold tracking-tight">Today</h1>
+      <p className="text-[12px] text-muted">
         {new Date(`${t.date}T00:00:00`).toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })}
       </p>
 
-      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-[12px] text-over">{error}</p>}
 
       {/* Ring + numbers */}
-      <div className="mt-4 flex items-center gap-5 rounded-3xl border border-stone-200 p-4 dark:border-stone-800">
+      <div className="mt-4 flex items-center gap-5 rounded-3xl border border-line bg-card p-4">
         <div className="relative h-32 w-32 shrink-0">
           <svg viewBox="0 0 128 128" className="h-full w-full -rotate-90">
-            <circle cx="64" cy="64" r={R} fill="none" strokeWidth="10" className="stroke-stone-100 dark:stroke-stone-800" />
+            <circle cx="64" cy="64" r={R} fill="none" strokeWidth="10" className="stroke-card-2" />
             <motion.circle
               cx="64"
               cy="64"
@@ -86,7 +83,7 @@ export function TodayView() {
               fill="none"
               strokeWidth="10"
               strokeLinecap="round"
-              className={ratio > 1 ? "stroke-red-500" : "stroke-accent"}
+              className={ratio > 1 ? "stroke-over" : "stroke-caramel"}
               strokeDasharray={C}
               initial={{ strokeDashoffset: C }}
               animate={{ strokeDashoffset: C * (1 - Math.min(1, ratio)) }}
@@ -95,8 +92,8 @@ export function TodayView() {
           </svg>
           <div className="absolute inset-0 grid place-items-center text-center">
             <div>
-              <div className="text-xl font-semibold tabular-nums leading-none">{fmt(t.eaten)}</div>
-              <div className="mt-1 text-[10px] text-stone-400">eaten</div>
+              <div className="text-[22px] font-semibold tabular-nums leading-none">{fmt(t.eaten)}</div>
+              <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-muted">eaten</div>
             </div>
           </div>
         </div>
@@ -104,65 +101,61 @@ export function TodayView() {
           <Row label="Goal" value={goal ? fmt(goal) : "not set"} />
           <Row label="Eaten" value={fmt(t.eaten)} />
           <Row label="Burned" value={fmt(t.burnedExercise + t.burnedSteps)} />
-          <Row
-            label="Remaining"
-            value={goal ? fmt(t.remaining) : "–"}
-            strong
-            danger={goal !== null && (t.remaining ?? 0) < 0}
-          />
+          <Row label="Remaining" value={goal ? fmt(t.remaining) : "–"} strong danger={goal !== null && (t.remaining ?? 0) < 0} />
         </dl>
       </div>
 
       {/* Steps */}
-      <div className="mt-3 flex items-center gap-2 rounded-3xl border border-stone-200 p-3 dark:border-stone-800">
-        <span className="text-xl">🚶</span>
+      <div className="mt-3 flex items-center gap-2.5 rounded-3xl border border-line bg-card p-3">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-card-2 text-cocoa">
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="13" cy="4" r="1.5" />
+            <path d="M10 21l2-6 3 2v4M8 13l2-5 4 1 2 4M13 7l-1.5 5" />
+          </svg>
+        </span>
         <input
           type="number"
           inputMode="numeric"
           value={steps}
           onChange={(e) => setSteps(e.target.value)}
           placeholder="Steps today"
-          className="h-10 min-w-0 flex-1 rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm outline-none focus:border-accent dark:border-stone-700 dark:bg-stone-950"
+          className="field h-10 min-w-0 flex-1"
         />
-        <span className="text-xs text-stone-400 tabular-nums">≈ {fmt(t.burnedSteps)} kcal</span>
+        <span className="shrink-0 text-[12px] text-muted tabular-nums">≈ {fmt(t.burnedSteps)} kcal</span>
         <button
           onClick={saveSteps}
           disabled={savingSteps}
-          className="h-10 rounded-xl bg-accent px-3 text-sm font-medium text-white disabled:opacity-50"
+          className="h-10 shrink-0 rounded-2xl bg-primary px-3.5 text-sm font-medium text-on-primary disabled:opacity-50"
         >
           Save
         </button>
       </div>
 
       {/* Week */}
-      <section className="mt-5">
-        <h2 className="mb-1 text-xs font-semibold uppercase tracking-wider text-stone-400">Last 7 days</h2>
-        <div className="rounded-3xl border border-stone-200 p-3 text-accent dark:border-stone-800">
+      <section className="mt-6">
+        <h2 className="eyebrow mb-2">Last 7 days</h2>
+        <div className="rounded-3xl border border-line bg-card p-3">
           <WeekChart days={view.week} goal={goal} />
         </div>
       </section>
 
       {/* Food log */}
-      <section className="mt-5">
-        <h2 className="mb-1 text-xs font-semibold uppercase tracking-wider text-stone-400">Eaten</h2>
+      <section className="mt-6">
+        <h2 className="eyebrow mb-2">Eaten</h2>
         <EntryList
-          empty="Nothing logged yet. Tell the bot what you ate."
+          empty="Nothing logged yet. Tell the assistant what you ate."
           items={t.intake.map((e) => ({ title: e.name, sub: e.quantity, kcal: e.calories }))}
           onRemove={(i) => remove("food", i)}
         />
       </section>
 
       {t.burned.length > 0 && (
-        <section className="mt-5">
-          <h2 className="mb-1 text-xs font-semibold uppercase tracking-wider text-stone-400">Workouts</h2>
-          <EntryList
-            empty=""
-            items={t.burned.map((e) => ({ title: e.activity, kcal: -e.calories }))}
-            onRemove={(i) => remove("burned", i)}
-          />
+        <section className="mt-6">
+          <h2 className="eyebrow mb-2">Workouts</h2>
+          <EntryList empty="" items={t.burned.map((e) => ({ title: e.activity, kcal: -e.calories }))} onRemove={(i) => remove("burned", i)} />
         </section>
       )}
-      <p className="mt-3 text-center text-[11px] text-stone-400">Swipe an entry left to delete it.</p>
+      <p className="mt-4 text-center text-[11px] text-muted">Swipe an entry left to delete it.</p>
     </div>
   );
 }
@@ -170,8 +163,8 @@ export function TodayView() {
 function Row({ label, value, strong, danger }: { label: string; value: string; strong?: boolean; danger?: boolean }) {
   return (
     <div className="flex justify-between">
-      <dt className="text-stone-500">{label}</dt>
-      <dd className={`tabular-nums ${strong ? "font-semibold" : ""} ${danger ? "text-red-600" : ""}`}>{value}</dd>
+      <dt className="text-muted">{label}</dt>
+      <dd className={`tabular-nums ${strong ? "font-semibold" : ""} ${danger ? "text-over" : ""}`}>{value}</dd>
     </div>
   );
 }
@@ -185,20 +178,22 @@ function EntryList({
   empty: string;
   onRemove: (index: number) => void;
 }) {
-  if (items.length === 0) return <p className="rounded-3xl border border-dashed border-stone-200 p-4 text-center text-xs text-stone-400 dark:border-stone-800">{empty}</p>;
+  if (items.length === 0) {
+    return <p className="rounded-3xl border border-dashed border-line p-4 text-center text-[12px] text-muted">{empty}</p>;
+  }
   return (
     <ul className="space-y-1.5">
       <AnimatePresence initial={false}>
         {items.map((it, i) => (
           <SwipeRow key={`${it.title}-${i}`} onDelete={() => onRemove(i)}>
-            <div className="flex items-center justify-between rounded-2xl bg-stone-50 px-3.5 py-2.5 dark:bg-stone-800">
+            <div className="flex items-center justify-between rounded-2xl border border-line bg-card px-4 py-3">
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium capitalize">{it.title}</div>
-                {it.sub && <div className="text-[11px] text-stone-400">{it.sub}</div>}
+                {it.sub && <div className="text-[11px] text-muted">{it.sub}</div>}
               </div>
               <div className="ml-3 shrink-0 text-sm tabular-nums">
                 {it.kcal < 0 ? "−" : ""}
-                {fmt(Math.abs(it.kcal))} <span className="text-[10px] text-stone-400">kcal</span>
+                {fmt(Math.abs(it.kcal))} <span className="text-[10px] text-muted">kcal</span>
               </div>
             </div>
           </SwipeRow>
@@ -213,12 +208,8 @@ function SwipeRow({ children, onDelete }: { children: React.ReactNode; onDelete:
     if (info.offset.x < -90) onDelete();
   }
   return (
-    <motion.li
-      layout
-      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-      className="relative overflow-hidden rounded-2xl"
-    >
-      <div className="absolute inset-y-0 right-0 flex w-24 items-center justify-end bg-red-500 pr-4 text-xs font-medium text-white">
+    <motion.li layout exit={{ opacity: 0, height: 0, marginBottom: 0 }} className="relative overflow-hidden rounded-2xl">
+      <div className="absolute inset-y-0 right-0 flex w-24 items-center justify-end bg-over pr-4 text-[12px] font-medium text-on-primary">
         Delete
       </div>
       <motion.div
@@ -227,7 +218,7 @@ function SwipeRow({ children, onDelete }: { children: React.ReactNode; onDelete:
         dragElastic={0.1}
         dragSnapToOrigin
         onDragEnd={onEnd}
-        className="relative bg-white dark:bg-stone-900"
+        className="relative bg-surface"
       >
         {children}
       </motion.div>

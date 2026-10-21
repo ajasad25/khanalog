@@ -83,7 +83,7 @@ HOW TO BEHAVE
 - Use teach_food when they say what THEIR version of a food is worth ("my chai is 90 cal").
 - Never do calorie arithmetic yourself; the tool results contain the totals. Quote them.
 - After logging, always end with the running total in this format: "Today: 840 / 1,800 kcal" (or "Today: 840 kcal" if no goal is set).
-- Keep replies short (1-3 lines). No markdown headings, no bullet lists unless the user asks for a full summary. Plain text. A single emoji at most.
+- Keep replies short (1-3 lines). No markdown headings, no bullet lists unless the user asks for a full summary. Plain text. Never use emojis.
 - If the user asks something unrelated to food, health, or their log, answer briefly and steer back.`;
 }
 

@@ -17,16 +17,7 @@ export function WeekChart({ days, goal }: { days: DaySummary[]; goal: number | n
   return (
     <svg viewBox={`0 0 ${W} ${H + 18}`} className="w-full" role="img" aria-label="Calories eaten over the last 7 days">
       {goal ? (
-        <line
-          x1={padX}
-          x2={W - padX}
-          y1={y(goal)}
-          y2={y(goal)}
-          stroke="currentColor"
-          className="text-stone-300 dark:text-stone-600"
-          strokeDasharray="4 4"
-          strokeWidth="1"
-        />
+        <line x1={padX} x2={W - padX} y1={y(goal)} y2={y(goal)} className="stroke-olive/60" strokeDasharray="4 4" strokeWidth="1" />
       ) : null}
       {days.map((d, i) => {
         const x = padX + i * (barW + barGap);
@@ -42,10 +33,10 @@ export function WeekChart({ days, goal }: { days: DaySummary[]; goal: number | n
               initial={{ y: H, height: 0 }}
               animate={{ y: y(d.eaten), height: Math.max(0, H - y(d.eaten)) }}
               transition={{ type: "spring", stiffness: 140, damping: 18, delay: i * 0.03 }}
-              className={over ? "fill-red-400" : isToday ? "fill-accent" : "fill-accent/50"}
+              className={over ? "fill-over" : isToday ? "fill-cocoa" : "fill-caramel/55"}
             />
             {d.eaten > 0 && (
-              <text x={x + barW / 2} y={y(d.eaten) - 4} textAnchor="middle" className="fill-stone-500 text-[9px] tabular-nums">
+              <text x={x + barW / 2} y={y(d.eaten) - 4} textAnchor="middle" className="fill-muted text-[9px] tabular-nums">
                 {fmt(d.eaten)}
               </text>
             )}
@@ -53,7 +44,7 @@ export function WeekChart({ days, goal }: { days: DaySummary[]; goal: number | n
               x={x + barW / 2}
               y={H + 13}
               textAnchor="middle"
-              className={`text-[10px] ${isToday ? "fill-stone-900 font-semibold dark:fill-stone-100" : "fill-stone-400"}`}
+              className={`text-[10px] ${isToday ? "fill-ink font-semibold" : "fill-muted"}`}
             >
               {label}
             </text>

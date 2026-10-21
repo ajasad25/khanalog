@@ -1,10 +1,44 @@
 @import "tailwindcss";
 
+/*
+ * Palette: mustard, caramel, slate, chocolate, peach, olive — on a warm cream base.
+ * Semantic tokens below are what components use; raw palette colours sit beside them.
+ */
 @theme {
-  --color-accent: #16a34a;
-  --color-accent-soft: #dcfce7;
-  --color-accent-ink: #052e16;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+
+  /* raw palette */
+  --color-cocoa: #5c2a0b;
+  --color-caramel: #a67845;
+  --color-gold: #dbb85a;
+  --color-peach: #efab72;
+  --color-olive: #585c3c;
+  --color-slate: #5e7a96;
+
+  /* semantic (light) */
+  --color-surface: #f7f0e6;
+  --color-card: #fdfaf5;
+  --color-card-2: #f1e5d4;
+  --color-line: #e6d8c6;
+  --color-ink: #3b1b0a;
+  --color-muted: #8c6b52;
+  --color-primary: #5c2a0b;
+  --color-on-primary: #f7f0e6;
+  --color-over: #c9693f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: #1c0f09;
+    --color-card: #2a170e;
+    --color-card-2: #35200f;
+    --color-line: #45291a;
+    --color-ink: #f3e7d9;
+    --color-muted: #b59a84;
+    --color-primary: #efab72;
+    --color-on-primary: #2a170e;
+    --color-over: #efab72;
+  }
 }
 
 :root {
@@ -17,13 +51,14 @@ body {
 }
 
 body {
-  @apply bg-stone-100 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
+  @apply bg-surface text-ink antialiased;
   overscroll-behavior-y: none;
 }
 
 /* Phone-sized column on desktop, full-bleed on mobile. */
 .app-shell {
-  @apply mx-auto flex h-dvh w-full max-w-md flex-col bg-white shadow-xl dark:bg-stone-900;
+  @apply mx-auto flex h-dvh w-full max-w-md flex-col bg-card;
+  box-shadow: 0 0 0 1px var(--color-line);
 }
 
 .safe-bottom {
@@ -35,6 +70,16 @@ body {
 }
 .scrollbar-none::-webkit-scrollbar {
   display: none;
+}
+
+/* Section labels used across screens. */
+.eyebrow {
+  @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-muted;
+}
+
+/* Inputs share one look. */
+.field {
+  @apply h-11 w-full rounded-2xl border border-line bg-card-2/60 px-3.5 text-sm text-ink outline-none transition focus:border-caramel focus:bg-card;
 }
 
 @keyframes blink {

@@ -9,13 +9,7 @@ export default async function LoginPage() {
 
   return (
     <Landing>
-      <div className="flex justify-center">
-        <SignIn
-          signUpUrl="/signup"
-          fallbackRedirectUrl="/"
-          appearance={{ elements: { cardBox: "shadow-none border border-stone-200 dark:border-stone-800", rootBox: "w-full" } }}
-        />
-      </div>
+      <SignIn signUpUrl="/signup" fallbackRedirectUrl="/" />
       {demoEnabled() && <DemoButton />}
     </Landing>
   );
