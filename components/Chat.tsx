@@ -91,7 +91,7 @@ export function Chat() {
           <div className="flex items-center gap-2">
             <img src="/icon.svg" alt="" className="h-8 w-8 rounded-xl" />
             <div>
-              <div className="text-sm font-semibold leading-tight">Calorie Bot</div>
+              <div className="text-sm font-semibold leading-tight">Khana Log</div>
               <div className="text-[11px] text-stone-400">
                 {view?.kind === "demo" && view.demo
                   ? `Demo · ${view.demo.used}/${view.demo.limit} messages today`

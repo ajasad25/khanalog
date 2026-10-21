@@ -4,13 +4,13 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Calorie Bot",
+  title: "Khana Log",
   description: "A calorie-tracking assistant you just talk to. Logs food from text or photos, tracks steps, remembers your days.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Calorie Bot",
+    title: "Khana Log",
   },
   icons: {
     icon: "/icon.svg",

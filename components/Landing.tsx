@@ -7,7 +7,7 @@ export function Landing({ children }: { children: ReactNode }) {
       <div className="mb-8 flex items-center gap-3">
         <img src="/icon.svg" alt="" className="h-12 w-12 rounded-2xl" />
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Calorie Bot</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Khana Log</h1>
           <p className="text-sm text-stone-500 dark:text-stone-400">A calorie tracker you just talk to.</p>
         </div>
       </div>

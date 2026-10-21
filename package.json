@@ -1,8 +1,8 @@
 {
-  "name": "calorie-bot",
+  "name": "khanalog",
   "version": "0.1.0",
   "private": true,
-  "description": "A WhatsApp calorie-tracking assistant: chat or send food photos, it logs calories, steps and goals with persistent memory.",
+  "description": "A calorie tracker you just talk to: chat or send food photos, it logs calories, steps and goals with persistent memory.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

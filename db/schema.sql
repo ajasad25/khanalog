@@ -1,4 +1,4 @@
--- Calorie Bot schema. Idempotent: safe to run on every deploy (npm run db:push).
+-- Khana Log schema. Idempotent: safe to run on every deploy (npm run db:push).
 
 CREATE TABLE IF NOT EXISTS users (
   id          TEXT PRIMARY KEY,                 -- 'user:<clerk id>' or 'demo:<random>'

@@ -36,7 +36,7 @@ function client(): OpenAI {
     baseURL: "https://openrouter.ai/api/v1",
     defaultHeaders: {
       "HTTP-Referer": process.env.PUBLIC_URL ?? "http://localhost:3000",
-      "X-Title": "Calorie Bot",
+      "X-Title": "Khana Log",
     },
   });
 }

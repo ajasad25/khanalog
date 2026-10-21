@@ -1,4 +1,4 @@
-# Calorie Bot
+# Khana Log
 
 A calorie-tracking assistant you just talk to. Installable on your phone as a web app.
 

@@ -182,7 +182,7 @@ function toIso(v: unknown): string {
 // ---------------------------------------------------------------------------
 // Upstash Redis
 
-const KEY_PREFIX = "calorie-bot:user:";
+const KEY_PREFIX = "khanalog:user:";
 
 class RedisStore implements Store {
   constructor(private redis: Redis) {}

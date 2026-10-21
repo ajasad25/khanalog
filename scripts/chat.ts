@@ -28,7 +28,7 @@ async function toImageDataUrl(p: string): Promise<string | undefined> {
 
 async function main() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  console.log("Calorie Bot (local). Type a message, or a path to a food photo. Ctrl+C to quit.\n");
+  console.log("Khana Log (local). Type a message, or a path to a food photo. Ctrl+C to quit.\n");
 
   const ask = () =>
     rl.question("you> ", async (line) => {
