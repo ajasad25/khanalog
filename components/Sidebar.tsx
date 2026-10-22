@@ -49,48 +49,47 @@ export function Sidebar({ kind }: { kind: "user" | "demo" }) {
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r-[1.5px] border-ink bg-sand-soft lg:flex">
-        <Link href="/chat" className="flex h-16 items-center gap-2.5 border-b-[1.5px] border-ink px-5">
-          <img src="/icon.svg" alt="" className="h-8 w-8 rounded-lg border-[1.5px] border-ink" />
-          <span className="font-display text-[22px]">Khana Log</span>
+      {/* Desktop: a narrow icon rail with big sticker targets. */}
+      <aside className="sticky top-0 hidden h-dvh w-[92px] shrink-0 flex-col items-center border-r-[1.5px] border-ink bg-sand-soft py-4 lg:flex">
+        <Link href="/chat" title="Khana Log" className="grid h-12 w-12 place-items-center rounded-2xl border-[1.5px] border-ink bg-ink shadow-press-sm transition active:translate-y-[2px] active:shadow-none">
+          <img src="/icon.svg" alt="Khana Log" className="h-9 w-9 rounded-xl" />
         </Link>
-        <nav className="flex-1 space-y-1.5 p-3">
+        <nav className="mt-8 flex flex-1 flex-col items-center gap-3">
           {NAV.map((n) => {
             const active = path.startsWith(n.href);
             return (
               <Link
                 key={n.href}
                 href={n.href}
-                className={`flex h-10 items-center gap-3 rounded-full px-4 text-sm transition ${
-                  active ? "border-[1.5px] border-ink bg-card font-medium shadow-press-sm" : "text-muted hover:bg-sand hover:text-ink"
+                className={`flex h-[68px] w-[68px] flex-col items-center justify-center gap-1.5 rounded-2xl text-[11px] font-medium transition ${
+                  active
+                    ? "border-[1.5px] border-ink bg-card text-ink shadow-press-sm"
+                    : "text-muted hover:-rotate-2 hover:bg-sand hover:text-ink"
                 }`}
               >
-                <Icon active={active}>{n.icon}</Icon>
+                <Icon active={active} size={24}>
+                  {n.icon}
+                </Icon>
                 {n.label}
               </Link>
             );
           })}
         </nav>
-        <div className="border-t-[1.5px] border-ink p-3">
+        <div className="flex flex-col items-center gap-3">
           {kind === "user" ? (
-            <div className="flex items-center gap-3 rounded-full px-2 py-1.5">
+            <div className="grid h-12 w-12 place-items-center rounded-full border-[1.5px] border-ink bg-card shadow-press-sm">
               <UserButton />
-              <span className="text-sm text-muted">Account</span>
             </div>
           ) : (
-            <div className="sticker-soft p-3">
-              <span className="label label-sage -rotate-2 text-[11px]">demo sandbox</span>
-              <p className="mt-2 text-[11px] leading-snug text-muted">Limited messages per day. Deleted after a week.</p>
-              <div className="mt-2.5 flex gap-2">
-                <Link href="/signup" className="btn-primary h-8 flex-1 px-2 text-xs">
-                  Sign up
-                </Link>
-                <button onClick={leaveDemo} className="btn-ghost h-8 px-2.5 text-xs">
-                  Leave
-                </button>
-              </div>
-            </div>
+            <>
+              <span className="label label-sage -rotate-6 px-2 py-0.5 text-[10px]">demo</span>
+              <Link href="/signup" title="Create an account" className="btn-primary h-10 w-[68px] px-0 text-xs">
+                Sign up
+              </Link>
+              <button onClick={leaveDemo} title="Leave the demo" className="text-[11px] text-muted hover:text-ink">
+                Leave
+              </button>
+            </>
           )}
         </div>
       </aside>
