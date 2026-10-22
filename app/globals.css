@@ -5,7 +5,7 @@
  * Flat surfaces, 1px borders, no gradients, no glow. Light theme only by design.
  */
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-serif), ui-serif, Georgia, serif;
 
   --color-ink: #223030;
@@ -34,7 +34,6 @@ body {
 
 body {
   @apply bg-paper text-ink antialiased;
-  font-feature-settings: "cv11", "ss01";
 }
 
 ::selection {
