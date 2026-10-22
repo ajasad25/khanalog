@@ -10,7 +10,8 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-dvh">
       <Sidebar kind={session.kind} />
-      <main className="flex min-h-dvh min-w-0 flex-1 flex-col pb-16 lg:pb-0">{children}</main>
+      {/* Mobile: clear the fixed top bar (3.5rem) and bottom tabs (4rem + safe area). */}
+      <main className="flex min-h-dvh min-w-0 flex-1 flex-col pt-14 pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pt-0 lg:pb-0">{children}</main>
     </div>
   );
 }

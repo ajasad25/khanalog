@@ -111,7 +111,7 @@ export function Sidebar({ kind }: { kind: "user" | "demo" }) {
       </div>
 
       {/* Mobile bottom tabs */}
-      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-20 flex border-t-[1.5px] border-ink bg-sand-soft lg:hidden">
+      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-20 flex h-[calc(4rem+env(safe-area-inset-bottom))] border-t-[1.5px] border-ink bg-sand-soft lg:hidden">
         {NAV.map((n) => {
           const active = path.startsWith(n.href);
           return (
@@ -124,7 +124,6 @@ export function Sidebar({ kind }: { kind: "user" | "demo" }) {
           );
         })}
       </nav>
-      <div className="h-14 lg:hidden" aria-hidden />
     </>
   );
 }

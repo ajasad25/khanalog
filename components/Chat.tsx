@@ -99,7 +99,7 @@ export function Chat() {
   const quick = view ? [...new Set([...Object.keys(view.foods), ...DEFAULT_QUICK])].slice(0, 6) : DEFAULT_QUICK;
 
   return (
-    <div className="grid h-[calc(100dvh-7.5rem)] lg:h-dvh lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="grid h-[calc(100dvh-7.5rem-env(safe-area-inset-bottom))] lg:h-dvh lg:grid-cols-[minmax(0,1fr)_320px]">
       <section className="flex min-h-0 flex-col">
         <header className="flex h-14 shrink-0 items-center justify-between border-b-[1.5px] border-ink bg-card px-5 lg:h-16 lg:px-8">
           <div>
