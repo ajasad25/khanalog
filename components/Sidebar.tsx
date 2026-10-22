@@ -29,9 +29,9 @@ const NAV = [
   },
 ];
 
-function Icon({ children, active }: { children: React.ReactNode; active: boolean }) {
+function Icon({ children, active, size = 20 }: { children: React.ReactNode; active: boolean; size?: number }) {
   return (
-    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth={active ? 2 : 1.7} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={size} height={size} className="shrink-0" fill="none" stroke="currentColor" strokeWidth={active ? 2.1 : 1.8} strokeLinecap="round" strokeLinejoin="round">
       {children}
     </svg>
   );
@@ -110,20 +110,28 @@ export function Sidebar({ kind }: { kind: "user" | "demo" }) {
         )}
       </div>
 
-      {/* Mobile bottom tabs */}
-      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-20 flex h-[calc(4rem+env(safe-area-inset-bottom))] border-t-[1.5px] border-ink bg-sand-soft lg:hidden">
-        {NAV.map((n) => {
-          const active = path.startsWith(n.href);
-          return (
-            <Link key={n.href} href={n.href} className={`flex flex-1 flex-col items-center gap-1 py-2 text-[11px] ${active ? "font-medium text-ink" : "text-muted"}`}>
-              <span className={`grid h-7 w-12 place-items-center rounded-full ${active ? "border-[1.5px] border-ink bg-card" : ""}`}>
-                <Icon active={active}>{n.icon}</Icon>
-              </span>
-              {n.label}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Mobile bottom nav: a floating pill, three big targets. */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] lg:hidden">
+        <nav className="pointer-events-auto mx-auto flex h-16 max-w-sm items-center gap-1 rounded-full border-[1.5px] border-ink bg-card p-1.5 shadow-sticker">
+          {NAV.map((n) => {
+            const active = path.startsWith(n.href);
+            return (
+              <Link
+                key={n.href}
+                href={n.href}
+                className={`flex h-full flex-1 items-center justify-center gap-2 rounded-full text-[13px] font-medium transition ${
+                  active ? "bg-ink text-paper" : "text-ink hover:bg-sand-soft"
+                }`}
+              >
+                <Icon active={active} size={22}>
+                  {n.icon}
+                </Icon>
+                <span className={active ? "" : "sr-only min-[400px]:not-sr-only"}>{n.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
     </>
   );
 }

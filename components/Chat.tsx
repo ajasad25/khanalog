@@ -14,9 +14,9 @@ const DEFAULT_QUICK = ["chai", "coffee", "roti", "paratha", "an apple"];
 let nextId = 0;
 const mkId = () => `m${Date.now()}-${nextId++}`;
 
-function CameraIcon({ className = "h-[18px] w-[18px]" }: { className?: string }) {
+function CameraIcon({ size = 22, className = "" }: { size?: number; className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width={size} height={size} className={`shrink-0 ${className}`} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
       <circle cx="12" cy="13" r="3.5" />
     </svg>
@@ -99,7 +99,7 @@ export function Chat() {
   const quick = view ? [...new Set([...Object.keys(view.foods), ...DEFAULT_QUICK])].slice(0, 6) : DEFAULT_QUICK;
 
   return (
-    <div className="grid h-[calc(100dvh-7.5rem-env(safe-area-inset-bottom))] lg:h-dvh lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="grid h-[calc(100dvh-8.75rem-env(safe-area-inset-bottom))] lg:h-dvh lg:grid-cols-[minmax(0,1fr)_320px]">
       <section className="flex min-h-0 flex-col">
         <header className="flex h-14 shrink-0 items-center justify-between border-b-[1.5px] border-ink bg-card px-5 lg:h-16 lg:px-8">
           <div>
@@ -156,7 +156,7 @@ export function Chat() {
                       {m.image && m.image !== "sent" && <img src={m.image} alt="food" className="mb-2 max-h-56 rounded-xl border border-ink/20 object-cover" />}
                       {m.image === "sent" && (
                         <span className="mr-1.5 inline-flex -translate-y-px align-middle opacity-70">
-                          <CameraIcon className="h-3.5 w-3.5" />
+                          <CameraIcon size={14} />
                         </span>
                       )}
                       {m.content}
@@ -205,8 +205,8 @@ export function Chat() {
               className="flex items-center gap-2"
             >
               <input ref={fileRef} type="file" accept="image/*" capture="environment" hidden onChange={pickPhoto} />
-              <button type="button" onClick={() => fileRef.current?.click()} aria-label="Add a photo" className="btn-secondary h-10 w-10 shrink-0 px-0">
-                <CameraIcon />
+              <button type="button" onClick={() => fileRef.current?.click()} aria-label="Add a photo" className="btn-secondary h-12! w-12 shrink-0 px-0">
+                <CameraIcon size={24} />
               </button>
               <input
                 ref={inputRef}
@@ -214,10 +214,10 @@ export function Chat() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={image ? "Add a note (optional)" : "I had…"}
                 enterKeyHint="send"
-                className="field h-10 flex-1 rounded-full px-4"
+                className="field h-12 flex-1 rounded-full px-5 text-[15px]"
               />
-              <button type="submit" disabled={sending || (!input.trim() && !image)} aria-label="Send" className="btn-primary h-10 w-10 shrink-0 px-0">
-                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <button type="submit" disabled={sending || (!input.trim() && !image)} aria-label="Send" className="btn-primary h-12! w-12 shrink-0 px-0">
+                <svg viewBox="0 0 24 24" width={24} height={24} className="shrink-0" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </button>
