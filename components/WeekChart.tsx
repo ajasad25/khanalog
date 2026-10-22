@@ -1,56 +1,79 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
 import { fmt } from "@/lib/client";
 import type { DaySummary } from "@/lib/tools";
 
-/** Seven bars of calories eaten, with the goal as a dashed line. */
+/** Seven bars of calories eaten against the goal line. Hover a bar for the exact number. */
 export function WeekChart({ days, goal }: { days: DaySummary[]; goal: number | null }) {
-  const W = 320;
-  const H = 120;
-  const padX = 8;
-  const barGap = 10;
-  const barW = (W - padX * 2 - barGap * (days.length - 1)) / days.length;
-  const max = Math.max(goal ?? 0, ...days.map((d) => d.eaten), 1) * 1.15;
-  const y = (v: number) => H - (v / max) * (H - 18);
+  const [hover, setHover] = useState<number | null>(null);
+  const W = 560;
+  const H = 180;
+  const padL = 36;
+  const padR = 8;
+  const padT = 14;
+  const padB = 26;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+  const gap = 18;
+  const barW = (innerW - gap * (days.length - 1)) / days.length;
+  const max = Math.max(goal ?? 0, ...days.map((d) => d.eaten), 1) * 1.1;
+  const y = (v: number) => padT + innerH - (v / max) * innerH;
+  const ticks = [0, 0.5, 1].map((t) => Math.round((max * t) / 100) * 100);
 
   return (
-    <svg viewBox={`0 0 ${W} ${H + 18}`} className="w-full" role="img" aria-label="Calories eaten over the last 7 days">
-      {goal ? (
-        <line x1={padX} x2={W - padX} y1={y(goal)} y2={y(goal)} className="stroke-olive/60" strokeDasharray="4 4" strokeWidth="1" />
-      ) : null}
-      {days.map((d, i) => {
-        const x = padX + i * (barW + barGap);
-        const over = goal !== null && d.eaten > goal;
-        const label = new Date(`${d.date}T00:00:00`).toLocaleDateString("en-US", { weekday: "short" })[0];
-        const isToday = i === days.length - 1;
-        return (
-          <g key={d.date}>
-            <motion.rect
-              x={x}
-              width={barW}
-              rx={6}
-              initial={{ y: H, height: 0 }}
-              animate={{ y: y(d.eaten), height: Math.max(0, H - y(d.eaten)) }}
-              transition={{ type: "spring", stiffness: 140, damping: 18, delay: i * 0.03 }}
-              className={over ? "fill-over" : isToday ? "fill-cocoa" : "fill-caramel/55"}
-            />
-            {d.eaten > 0 && (
-              <text x={x + barW / 2} y={y(d.eaten) - 4} textAnchor="middle" className="fill-muted text-[9px] tabular-nums">
-                {fmt(d.eaten)}
-              </text>
-            )}
-            <text
-              x={x + barW / 2}
-              y={H + 13}
-              textAnchor="middle"
-              className={`text-[10px] ${isToday ? "fill-ink font-semibold" : "fill-muted"}`}
-            >
-              {label}
+    <div className="relative">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Calories eaten over the last 7 days">
+        {ticks.map((t) => (
+          <g key={t}>
+            <line x1={padL} x2={W - padR} y1={y(t)} y2={y(t)} className="stroke-line" strokeWidth="1" />
+            <text x={padL - 8} y={y(t) + 3} textAnchor="end" className="fill-faint text-[10px] tabular-nums">
+              {fmt(t)}
             </text>
           </g>
-        );
-      })}
-    </svg>
+        ))}
+        {goal ? (
+          <g>
+            <line x1={padL} x2={W - padR} y1={y(goal)} y2={y(goal)} className="stroke-sage" strokeDasharray="3 4" strokeWidth="1.2" />
+            <text x={W - padR} y={y(goal) - 5} textAnchor="end" className="fill-sage text-[10px] font-medium">
+              goal {fmt(goal)}
+            </text>
+          </g>
+        ) : null}
+        {days.map((d, i) => {
+          const x = padL + i * (barW + gap);
+          const over = goal !== null && d.eaten > goal;
+          const isToday = i === days.length - 1;
+          const label = new Date(`${d.date}T00:00:00`).toLocaleDateString("en-US", { weekday: "short" });
+          const h = Math.max(0, padT + innerH - y(d.eaten));
+          return (
+            <g key={d.date} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)}>
+              <rect x={x} y={padT} width={barW} height={innerH} fill="transparent" />
+              <rect
+                x={x}
+                y={y(d.eaten)}
+                width={barW}
+                height={h}
+                rx={4}
+                className={`transition-opacity ${over ? "fill-bark" : isToday ? "fill-ink" : "fill-tan"} ${hover !== null && hover !== i ? "opacity-50" : ""}`}
+              />
+              {hover === i && d.eaten > 0 && (
+                <text x={x + barW / 2} y={y(d.eaten) - 6} textAnchor="middle" className="fill-ink text-[11px] font-medium tabular-nums">
+                  {fmt(d.eaten)}
+                </text>
+              )}
+              <text
+                x={x + barW / 2}
+                y={H - 8}
+                textAnchor="middle"
+                className={`text-[11px] ${isToday ? "fill-ink font-medium" : "fill-muted"}`}
+              >
+                {label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
   );
 }

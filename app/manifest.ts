@@ -4,11 +4,11 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Khana Log",
     short_name: "Khana Log",
-    description: "A calorie-tracking assistant you just talk to.",
+    description: "A calorie tracker you just talk to.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f7f0e6",
-    theme_color: "#5c2a0b",
+    background_color: "#efefe9",
+    theme_color: "#223030",
     icons: [{ src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" }],
   };
 }

@@ -1,48 +1,30 @@
 @import "tailwindcss";
 
 /*
- * Palette: mustard, caramel, slate, chocolate, peach, olive — on a warm cream base.
- * Semantic tokens below are what components use; raw palette colours sit beside them.
+ * "Cozy" palette: #223030 ink · #523D35 bark · #959D90 sage · #BBA58F tan · #E8D9CD sand · #EFEFE9 paper
+ * Flat surfaces, 1px borders, no gradients, no glow. Light theme only by design.
  */
 @theme {
-  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-serif), ui-serif, Georgia, serif;
 
-  /* raw palette */
-  --color-cocoa: #5c2a0b;
-  --color-caramel: #a67845;
-  --color-gold: #dbb85a;
-  --color-peach: #efab72;
-  --color-olive: #585c3c;
-  --color-slate: #5e7a96;
+  --color-ink: #223030;
+  --color-bark: #523d35;
+  --color-sage: #959d90;
+  --color-tan: #bba58f;
+  --color-sand: #e8d9cd;
+  --color-paper: #efefe9;
 
-  /* semantic (light) */
-  --color-surface: #f7f0e6;
-  --color-card: #fdfaf5;
-  --color-card-2: #f1e5d4;
-  --color-line: #e6d8c6;
-  --color-ink: #3b1b0a;
-  --color-muted: #8c6b52;
-  --color-primary: #5c2a0b;
-  --color-on-primary: #f7f0e6;
-  --color-over: #c9693f;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-surface: #1c0f09;
-    --color-card: #2a170e;
-    --color-card-2: #35200f;
-    --color-line: #45291a;
-    --color-ink: #f3e7d9;
-    --color-muted: #b59a84;
-    --color-primary: #efab72;
-    --color-on-primary: #2a170e;
-    --color-over: #efab72;
-  }
+  --color-card: #ffffff;
+  --color-line: #e1dbd2;
+  --color-muted: #727a74;
+  --color-faint: #a3a9a3;
+  --color-sand-soft: #f4ece4;
+  --color-sage-soft: #e9ece8;
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 html,
@@ -51,35 +33,52 @@ body {
 }
 
 body {
-  @apply bg-surface text-ink antialiased;
-  overscroll-behavior-y: none;
+  @apply bg-paper text-ink antialiased;
+  font-feature-settings: "cv11", "ss01";
 }
 
-/* Phone-sized column on desktop, full-bleed on mobile. */
-.app-shell {
-  @apply mx-auto flex h-dvh w-full max-w-md flex-col bg-card;
-  box-shadow: 0 0 0 1px var(--color-line);
+::selection {
+  background: var(--color-sand);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  @apply text-[11px] font-medium uppercase tracking-[0.16em] text-muted;
+}
+
+.card {
+  @apply rounded-xl border border-line bg-card;
+}
+
+.field {
+  @apply h-10 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-none transition placeholder:text-faint focus:border-sage focus:ring-2 focus:ring-sage/25;
+}
+
+@utility btn {
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage/40 disabled:pointer-events-none disabled:opacity-50;
+}
+.btn-primary {
+  @apply btn bg-ink text-paper hover:bg-bark;
+}
+.btn-secondary {
+  @apply btn border border-line bg-card text-ink hover:bg-sand-soft;
+}
+.btn-ghost {
+  @apply btn text-ink hover:bg-sand-soft;
 }
 
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-.scrollbar-none {
-  scrollbar-width: none;
-}
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-
-/* Section labels used across screens. */
-.eyebrow {
-  @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-muted;
-}
-
-/* Inputs share one look. */
-.field {
-  @apply h-11 w-full rounded-2xl border border-line bg-card-2/60 px-3.5 text-sm text-ink outline-none transition focus:border-caramel focus:bg-card;
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
 }
 
 @keyframes blink {

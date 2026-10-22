@@ -159,8 +159,8 @@ export interface DaySummary {
   net: number;
   goal: number | null;
   remaining: number | null;
-  intake: { name: string; calories: number; quantity?: string }[];
-  burned: { activity: string; calories: number }[];
+  intake: { name: string; calories: number; quantity?: string; time: string }[];
+  burned: { activity: string; calories: number; time: string }[];
 }
 
 export function summarise(state: UserState, key: string): DaySummary {
@@ -180,8 +180,8 @@ export function summarise(state: UserState, key: string): DaySummary {
     net,
     goal,
     remaining: goal === null ? null : goal - net,
-    intake: day.intake.map(({ name, calories, quantity }) => ({ name, calories, quantity })),
-    burned: day.burned.map(({ activity, calories }) => ({ activity, calories })),
+    intake: day.intake.map(({ name, calories, quantity, time }) => ({ name, calories, quantity, time })),
+    burned: day.burned.map(({ activity, calories, time }) => ({ activity, calories, time })),
   };
 }
 
