@@ -19,14 +19,14 @@ export function WeekChart({ days, goal }: { days: DaySummary[]; goal: number | n
   const barW = (innerW - gap * (days.length - 1)) / days.length;
   const max = Math.max(goal ?? 0, ...days.map((d) => d.eaten), 1) * 1.1;
   const y = (v: number) => padT + innerH - (v / max) * innerH;
-  const ticks = [0, 0.5, 1].map((t) => Math.round((max * t) / 100) * 100);
+  const ticks = [...new Set([0, 0.5, 1].map((t) => Math.round((max * t) / 100) * 100))];
 
   return (
     <div className="relative">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Calories eaten over the last 7 days">
         {ticks.map((t) => (
           <g key={t}>
-            <line x1={padL} x2={W - padR} y1={y(t)} y2={y(t)} className="stroke-line" strokeWidth="1" />
+            <line x1={padL} x2={W - padR} y1={y(t)} y2={y(t)} className="stroke-sand" strokeWidth="1" />
             <text x={padL - 8} y={y(t) + 3} textAnchor="end" className="fill-faint text-[10px] tabular-nums">
               {fmt(t)}
             </text>
@@ -54,7 +54,7 @@ export function WeekChart({ days, goal }: { days: DaySummary[]; goal: number | n
                 y={y(d.eaten)}
                 width={barW}
                 height={h}
-                rx={4}
+                rx={6}
                 className={`transition-opacity ${over ? "fill-bark" : isToday ? "fill-ink" : "fill-tan"} ${hover !== null && hover !== i ? "opacity-50" : ""}`}
               />
               {hover === i && d.eaten > 0 && (

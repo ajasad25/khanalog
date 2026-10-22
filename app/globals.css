@@ -2,11 +2,12 @@
 
 /*
  * "Cozy" palette: #223030 ink · #523D35 bark · #959D90 sage · #BBA58F tan · #E8D9CD sand · #EFEFE9 paper
- * Flat surfaces, 1px borders, no gradients, no glow. Light theme only by design.
+ * Stationery feel: dotted paper, sticker outlines, hard offset shadows, pill buttons that press.
+ * No gradients, no glow.
  */
 @theme {
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-serif), ui-serif, Georgia, serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
 
   --color-ink: #223030;
   --color-bark: #523d35;
@@ -16,11 +17,16 @@
   --color-paper: #efefe9;
 
   --color-card: #ffffff;
-  --color-line: #e1dbd2;
-  --color-muted: #727a74;
+  --color-line: #d9d1c6;
+  --color-muted: #6f766f;
   --color-faint: #a3a9a3;
   --color-sand-soft: #f4ece4;
-  --color-sage-soft: #e9ece8;
+  --color-sage-soft: #e6eae4;
+
+  --shadow-press: 0 3px 0 0 var(--color-ink);
+  --shadow-press-sm: 0 2px 0 0 var(--color-ink);
+  --shadow-sticker: 3px 3px 0 0 var(--color-ink);
+  --shadow-sticker-soft: 3px 3px 0 0 var(--color-sand);
 }
 
 :root {
@@ -40,35 +46,76 @@ body {
   background: var(--color-sand);
 }
 
+/* Dotted paper, like a notebook page. */
+.dots {
+  background-image: radial-gradient(var(--color-sand) 1.1px, transparent 1.2px);
+  background-size: 18px 18px;
+}
+
 .font-display {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.01em;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
 }
 
 .eyebrow {
   @apply text-[11px] font-medium uppercase tracking-[0.16em] text-muted;
 }
 
+/* Cards: soft outline by default, sticker outline when asked. */
 .card {
-  @apply rounded-xl border border-line bg-card;
+  @apply rounded-2xl border border-line bg-card;
+}
+.sticker {
+  @apply rounded-2xl border-[1.5px] border-ink bg-card shadow-sticker;
+}
+.sticker-soft {
+  @apply rounded-2xl border border-line bg-card shadow-sticker-soft;
+}
+
+/* A strip of washi tape across the top edge of a card. */
+.tape {
+  position: relative;
+}
+.tape::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 76px;
+  height: 18px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: var(--color-tan);
+  opacity: 0.85;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.tape-left::before {
+  left: 28px;
+  transform: rotate(-6deg);
 }
 
 .field {
-  @apply h-10 w-full rounded-lg border border-line bg-card px-3 text-sm text-ink outline-none transition placeholder:text-faint focus:border-sage focus:ring-2 focus:ring-sage/25;
+  @apply h-10 w-full rounded-xl border border-line bg-card px-3 text-sm text-ink outline-none transition placeholder:text-faint focus:border-ink;
 }
 
 @utility btn {
-  @apply inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage/40 disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex h-10 items-center justify-center gap-2 rounded-full px-4 text-sm font-medium transition select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage/50 disabled:pointer-events-none disabled:opacity-50;
 }
+/* Pill that physically presses down. */
 .btn-primary {
-  @apply btn bg-ink text-paper hover:bg-bark;
+  @apply btn border-[1.5px] border-ink bg-ink text-paper shadow-press hover:bg-bark hover:border-bark active:translate-y-[3px] active:shadow-none;
 }
 .btn-secondary {
-  @apply btn border border-line bg-card text-ink hover:bg-sand-soft;
+  @apply btn border-[1.5px] border-ink bg-card text-ink shadow-press hover:bg-sand-soft active:translate-y-[3px] active:shadow-none;
 }
 .btn-ghost {
   @apply btn text-ink hover:bg-sand-soft;
+}
+/* Small sticker chip: tilts a touch on hover. */
+.chip {
+  @apply inline-flex h-9 items-center gap-1.5 rounded-full border-[1.5px] border-ink bg-card px-3.5 text-[13px] font-medium text-ink shadow-press-sm transition hover:-rotate-1 hover:bg-sand-soft active:translate-y-[2px] active:shadow-none;
 }
 
 .safe-bottom {
@@ -98,4 +145,101 @@ body {
 }
 .typing-dot:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+@keyframes steam {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-7px);
+    opacity: 0;
+  }
+}
+.steam path {
+  animation: steam 2.4s infinite ease-out;
+}
+.steam path:nth-child(2) {
+  animation-delay: 0.6s;
+}
+.steam path:nth-child(3) {
+  animation-delay: 1.2s;
+}
+
+/* ---- scrapbook bits ------------------------------------------------------ */
+
+/* Grid paper. */
+.grid-paper {
+  background-image:
+    linear-gradient(var(--color-sand) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-sand) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+
+/* Highlighter stroke behind a word. */
+.hl {
+  box-shadow: inset 0 -0.42em 0 0 var(--color-sand);
+  padding: 0 0.08em;
+}
+.hl-sage {
+  box-shadow: inset 0 -0.42em 0 0 var(--color-sage-soft);
+  padding: 0 0.08em;
+}
+
+/* Small rotated sticker label. */
+.label {
+  @apply inline-flex items-center gap-1 rounded-md border-[1.5px] border-ink bg-sand px-2.5 py-1 text-[12px] font-medium text-ink shadow-press-sm;
+}
+.label-paper {
+  @apply bg-card;
+}
+.label-sage {
+  @apply bg-sage-soft;
+}
+
+/* Scalloped edges on section blocks. */
+.scallop-top {
+  position: relative;
+}
+.scallop-top::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -11px;
+  height: 22px;
+  background: radial-gradient(circle at 11px 11px, var(--scallop, var(--color-sand)) 11px, transparent 11.6px);
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+
+/* Marquee strip. */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Thick-outlined framed section. */
+.frame {
+  @apply rounded-3xl border-[1.5px] border-ink bg-card;
 }
