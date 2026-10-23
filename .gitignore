@@ -6,9 +6,7 @@ out/
 next-env.d.ts
 
 # secrets and local data
-.env
 .env*.local
-.env.local
 .data/
 .vercel
 
@@ -22,3 +20,4 @@ for-linkedin/
 .claude/skills/
 skills-lock.json
 .DS_Store
+config.bat
