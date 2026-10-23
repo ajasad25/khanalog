@@ -4,9 +4,9 @@
   "private": true,
   "description": "A calorie tracker you just talk to: chat or send food photos, it logs calories, steps and goals with persistent memory.",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node init && next dev",
+    "build": "node init && next build",
+    "start": "node init && next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "chat": "tsx scripts/chat.ts",
